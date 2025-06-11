@@ -293,6 +293,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
     <!-- Update the signup script -->
+    <script src="js/config.js"></script>
     <script>
         function showSuccessPopup() {
             document.getElementById('overlay').classList.add('show');
@@ -333,7 +334,7 @@
             if (hasError) return;
 
             try {
-                const response = await fetch('http://localhost:5000/api/signup', {
+                const response = await fetch(`${API_URL}/api/signup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

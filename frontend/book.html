@@ -222,60 +222,36 @@
         </div>
     </div>
 
+    <script src="js/config.js"></script>
     <script>
-        // Get book ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const bookId = urlParams.get('id');
-
-        // Function to fetch and display book details
-        async function displayBookDetails() {
+        // Fetch and display book details
+        async function fetchBookDetails() {
             try {
-                const response = await fetch(`http://localhost:5000/api/books/${bookId}`);
+                const urlParams = new URLSearchParams(window.location.search);
+                const bookId = urlParams.get('id');
+                
+                const response = await fetch(`${API_URL}/api/books/${bookId}`);
                 const book = await response.json();
-
-                document.title = `${book.name} - Bibliothèque Numérique`;
-
-                const bookContent = document.getElementById('bookContent');
-                bookContent.innerHTML = `
-                    <div class="book-header">
-                        <div class="book-cover">
-                            <img src="http://localhost:5000/${book.imageUrl}" alt="${book.name}">
-                        </div>
-                        <div class="book-info">
-                            <h1>${book.name}</h1>
-                            <p class="author">${book.author}</p>
-                            <p class="description">${book.description}</p>
-                            <div class="book-actions">
-                                <a href="javascript:void(0)" onclick="openPdfInNewTab('${book.pdfUrl}')" class="btn btn-primary">
-                                    <i class="fas fa-book-open"></i> Lire en ligne
-                                </a>
-                                <a href="http://localhost:5000/${book.pdfUrl}" download class="btn btn-secondary">
-                                    <i class="fas fa-download"></i> Télécharger
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pdf-viewer">
-                        <h2>
-                            Aperçu du livre
-                            <button class="btn-fullscreen" onclick="toggleFullscreen()">
-                                <i class="fas fa-expand"></i> Plein écran
-                            </button>
-                        </h2>
-                        <div class="pdf-preview">
-                            <p>Pour lire le livre en ligne, cliquez sur le bouton "Lire en ligne" ci-dessus.</p>
-                            <p>Le livre s'ouvrira dans un nouvel onglet pour une meilleure expérience de lecture.</p>
-                        </div>
-                    </div>
-                `;
+                
+                // Update page content
+                document.querySelector('.book-cover img').src = `${API_URL}/${book.imageUrl}`;
+                document.querySelector('.book-cover img').alt = book.name;
+                document.querySelector('.book-title').textContent = book.name;
+                document.querySelector('.book-author').textContent = book.author;
+                document.querySelector('.book-description').textContent = book.description;
+                
+                // Update download link
+                document.querySelector('.download-link').href = `${API_URL}/${book.pdfUrl}`;
+                
+                // Update PDF viewer
+                const pdfUrl = book.pdfUrl;
+                const fullUrl = `${API_URL}/${pdfUrl}`;
+                document.querySelector('.pdf-viewer iframe').src = fullUrl;
+                
+                // Update download button
+                document.querySelector('.download-button').href = `${API_URL}/${book.pdfUrl}`;
             } catch (error) {
                 console.error('Error fetching book details:', error);
-                document.getElementById('bookContent').innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p>Une erreur est survenue lors du chargement du livre.</p>
-                    </div>
-                `;
             }
         }
 
@@ -300,7 +276,7 @@
         }
 
         // Display book details on page load
-        displayBookDetails();
+        fetchBookDetails();
 
         // Function to toggle fullscreen PDF viewer
         function toggleFullscreen() {
