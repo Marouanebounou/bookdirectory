@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À Propos - Bibliothèque Numérique</title>
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="about.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <i class="fas fa-book-reader"></i>
+      <span>Bibliothèque Numérique</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="livres.html">Livres</a>
+      <a href="about.html" class="active">À Propos</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <div id="userSection" style="display: none;">
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
+      </div>
+      <div id="guestSection">
+        <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
+        <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="about-page">
+    <section class="about-hero">
+      <div class="about-content">
+        <h1>Notre Histoire</h1>
+        <p class="lead">Depuis 2015, nous rendons la littérature accessible à tous</p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-number">100K+</span>
+            <span class="stat-label">Lecteurs Actifs</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Livres Disponibles</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">200+</span>
+            <span class="stat-label">Auteurs Partenaires</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-section">
+      <div class="mission-content">
+        <h2>Notre Mission</h2>
+        <p>Nous croyons que l'accès à la connaissance et à la littérature devrait être universel. Notre mission est de créer la plus grande bibliothèque numérique accessible, offrant une expérience de lecture exceptionnelle à nos utilisateurs.</p>
+        <div class="values-grid">
+          <div class="value-card">
+            <i class="fas fa-book"></i>
+            <h3>Accessibilité</h3>
+            <p>Rendre la lecture accessible à tous, partout</p>
+          </div>
+          <div class="value-card">
+            <i class="fas fa-lightbulb"></i>
+            <h3>Innovation</h3>
+            <p>Adopter les dernières technologies pour améliorer l'expérience de lecture</p>
+          </div>
+          <div class="value-card">
+            <i class="fas fa-users"></i>
+            <h3>Communauté</h3>
+            <p>Créer un espace d'échange pour les passionnés de lecture</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section class="join-section">
+      <div class="join-content">
+        <h2>Rejoignez Notre Équipe</h2>
+        <p>Nous sommes toujours à la recherche de talents passionnés par la lecture et la technologie.</p>
+        <a href="#" class="btn btn-primary">Voir Nos Offres</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>À Propos de Nous</h3>
+        <p>Votre source de confiance pour les livres numériques. Nous nous engageons à rendre le savoir accessible à tous.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Liens Rapides</h3>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="livres.html">Livres</a></li>
+          <li><a href="about.html">À Propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contactez-nous</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-envelope"></i> contact@bibliothequenumerique.fr</li>
+          <li><i class="fas fa-phone"></i> +33 1 23 45 67 89</li>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Rue de la Bibliothèque, Paris</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Bibliothèque Numérique. Tous droits réservés.</p>
+    </div>
+  </footer>
+</body>
+</html> 

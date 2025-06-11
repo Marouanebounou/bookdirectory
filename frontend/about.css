@@ -1,0 +1,257 @@
+/* About Page Specific Styles */
+.about-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.about-hero {
+  background: var(--card-bg);
+  padding: 4rem 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.about-content h1 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: var(--light-text);
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: var(--light-text);
+  font-size: 1.1rem;
+}
+
+/* Mission Section */
+.mission-section {
+  background: var(--card-bg);
+  padding: 4rem 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  margin-bottom: 4rem;
+}
+
+.mission-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mission-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.mission-content p {
+  color: var(--light-text);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.value-card {
+  padding: 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+}
+
+.value-card i {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.value-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Team Section */
+.team-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.team-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 3rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.team-member {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+}
+
+.team-member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+
+.team-member h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.position {
+  color: var(--light-text);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.bio {
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Partners Section */
+.partners-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.partners-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 3rem;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.partner {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.partner:hover {
+  transform: translateY(-5px);
+}
+
+.partner img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.partner span {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* Join Section */
+.join-section {
+  background: var(--card-bg);
+  padding: 4rem 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.join-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.join-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.join-content p {
+  color: var(--light-text);
+  margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 2rem 1rem;
+  }
+
+  .about-content h1 {
+    font-size: 2rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .mission-section,
+  .join-section {
+    padding: 2rem 1rem;
+  }
+
+  .team-member img {
+    width: 120px;
+    height: 120px;
+  }
+} 

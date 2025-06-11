@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bibliothèque Numérique</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .search-box {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .search-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      display: none;
+      z-index: 1000;
+    }
+
+    .search-dropdown.show {
+      display: block;
+    }
+
+    .search-result-item {
+      padding: 12px 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background-color 0.2s ease;
+    }
+
+    .search-result-item:hover {
+      background-color: #f7fafc;
+    }
+
+    .search-result-item img {
+      width: 40px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .search-result-info {
+      flex: 1;
+    }
+
+    .search-result-info h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #2d3748;
+    }
+
+    .search-result-info p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      color: #718096;
+    }
+
+    .search-result-price {
+      font-weight: 600;
+      color: #667eea;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <i class="fas fa-book-reader"></i>
+      <span>Bibliothèque Numérique</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="livres.html">Livres</a>
+      <a href="about.html">À Propos</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <div id="userSection" style="display: none;">
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
+      </div>
+      <div id="guestSection">
+        <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
+        <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Découvrez Votre Prochain Livre Préféré</h1>
+      <p>Explorez notre vaste collection de livres numériques. Des best-sellers aux trésors cachés, trouvez votre lecture idéale aujourd'hui.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <i class="fas fa-book"></i>
+          <span>10 000+ Livres</span>
+        </div>
+        <div class="stat">
+          <i class="fas fa-users"></i>
+          <span>50 000+ Lecteurs</span>
+        </div>
+        <div class="stat">
+          <i class="fas fa-star"></i>
+          <span>4.8/5 Étoiles</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Bibliothèque" />
+    </div>
+  </header>
+
+  <main>
+    <section class="featured-books">
+      <h2>Livres les Plus Téléchargés</h2>
+      <div class="books-grid" id="featuredBooks">
+        <!-- Books will be dynamically added here -->
+      </div>
+    </section>
+
+    <section class="book-suggestions">
+      <h2>Suggestions de lecture</h2>
+      <div class="books-grid" id="suggestedBooks">
+        <!-- Suggested books will be dynamically added here -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>À Propos de Nous</h3>
+        <p>Votre source de confiance pour les livres numériques. Nous nous engageons à rendre le savoir accessible à tous.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Liens Rapides</h3>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="livres.html">Livres</a></li>
+          <li><a href="about.html">À Propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contactez-nous</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-envelope"></i> contact@bibliothequenumerique.fr</li>
+          <li><i class="fas fa-phone"></i> +33 1 23 45 67 89</li>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Rue de la Bibliothèque, Paris</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Bibliothèque Numérique. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    // Function to display featured books
+    async function displayFeaturedBooks() {
+      try {
+        const response = await fetch('http://localhost:5000/api/books');
+        if (!response.ok) {
+          throw new Error('Failed to fetch books');
+        }
+        const books = await response.json();
+        
+        // Sort books by download count and take top 4
+        const featuredBooks = books
+          .sort((a, b) => (b.downloadCount || 0) - (a.downloadCount || 0))
+          .slice(0, 4);
+        
+        const featuredBooksContainer = document.getElementById('featuredBooks');
+        featuredBooksContainer.innerHTML = '';
+        
+        featuredBooks.forEach(book => {
+          const bookCard = createBookCard(book);
+          featuredBooksContainer.appendChild(bookCard);
+        });
+      } catch (error) {
+        console.error('Error fetching featured books:', error);
+        const featuredBooksContainer = document.getElementById('featuredBooks');
+        featuredBooksContainer.innerHTML = '<p class="error-message">Erreur lors du chargement des livres</p>';
+      }
+    }
+
+    // Function to display suggested books
+    async function displaySuggestedBooks() {
+      try {
+        const response = await fetch('http://localhost:5000/api/books');
+        const allBooks = await response.json();
+        
+        // Get 4 random books for suggestions
+        const suggestedBooks = allBooks
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 4);
+        
+        const suggestedBooksContainer = document.getElementById('suggestedBooks');
+        suggestedBooksContainer.innerHTML = '';
+        
+        suggestedBooks.forEach(book => {
+          const bookCard = createBookCard(book);
+          suggestedBooksContainer.appendChild(bookCard);
+        });
+      } catch (error) {
+        console.error('Error fetching suggested books:', error);
+      }
+    }
+
+    // Function to handle book download
+    async function downloadBook(bookId) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/books/${bookId}/download`, {
+          method: 'POST'
+        });
+        if (response.ok) {
+          window.location.href = `http://localhost:5000/api/books/${bookId}/pdf`;
+        }
+      } catch (error) {
+        console.error('Error downloading book:', error);
+      }
+    }
+
+    // Function to create a book card
+    function createBookCard(book) {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      card.innerHTML = `
+        <div class="book-cover">
+          <img src="http://localhost:5000/${book.imageUrl}" alt="${book.name}">
+          <div class="book-overlay">
+            <button onclick="readBook('${book._id}')" class="btn-icon"><i class="fas fa-book-open"></i></button>
+            <a href="http://localhost:5000/${book.pdfUrl}" download class="btn-icon"><i class="fas fa-download"></i></a>
+          </div>
+        </div>
+        <div class="book-info">
+          <h3>${book.name}</h3>
+          <p class="author">${book.author}</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span>4.5</span>
+          </div>
+          <p class="description">${book.description}</p>
+          <div class="book-actions">
+            <button onclick="readBook('${book._id}')" class="btn btn-primary">Lire</button>
+            <a href="http://localhost:5000/${book.pdfUrl}" download class="btn btn-outline">Télécharger</a>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    // Function to handle book reading
+    function readBook(bookId) {
+      window.location.href = `book.html?id=${bookId}`;
+    }
+
+    // Load books when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      displayFeaturedBooks();
+      displaySuggestedBooks();
+    });
+
+    // Sample books data (same as in livres.html)
+    const allBooks = [
+      {
+        id: 1,
+        title: "Le Château des Étoiles",
+        author: "Marie Dubois",
+        category: "Fantasy",
+        price: 19.99,
+        rating: 4.8,
+        cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500",
+        description: "Une aventure fantastique dans un monde magique."
+      },
+      {
+        id: 2,
+        title: "L'Énigme du Temps",
+        author: "Pierre Martin",
+        category: "Science-Fiction",
+        price: 24.99,
+        rating: 4.5,
+        cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500",
+        description: "Un voyage à travers le temps qui changera tout."
+      },
+      {
+        id: 3,
+        title: "Les Ombres de Paris",
+        author: "Sophie Laurent",
+        category: "Policier",
+        price: 21.99,
+        rating: 4.7,
+        cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=500",
+        description: "Une enquête captivante dans les rues de Paris."
+      },
+      {
+        id: 4,
+        title: "Le Jardin des Secrets",
+        author: "Jean Dupont",
+        category: "Roman",
+        price: 18.99,
+        rating: 4.6,
+        cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500",
+        description: "Une histoire d'amour et de mystère."
+      },
+      {
+        id: 5,
+        title: "Les Mémoires d'un Voyageur",
+        author: "Claire Bernard",
+        category: "Biographie",
+        price: 22.99,
+        rating: 4.4,
+        cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500",
+        description: "Le récit captivant d'une vie extraordinaire."
+      },
+      {
+        id: 6,
+        title: "L'Éveil des Dragons",
+        author: "Thomas Moreau",
+        category: "Fantasy",
+        price: 23.99,
+        rating: 4.9,
+        cover: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=500",
+        description: "Une épopée fantastique dans un monde de dragons."
+      }
+    ];
+
+    function handleSearch(event) {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const dropdown = document.getElementById('searchDropdown');
+      
+      // Always update the main grid with filtered results
+      const filteredBooks = query ? 
+        allBooks.filter(book => 
+          book.title.toLowerCase().includes(query) ||
+          book.author.toLowerCase().includes(query) ||
+          book.description.toLowerCase().includes(query)
+        ) : 
+        allBooks;
+
+      // Update dropdown if query is long enough
+      if (query.length < 2) {
+        dropdown.classList.remove('show');
+        return;
+      }
+
+      const topResults = filteredBooks.slice(0, 5);
+
+      if (topResults.length > 0) {
+        dropdown.innerHTML = topResults.map(book => `
+          <div class="search-result-item" onclick="selectBook(${book.id})">
+            <img src="${book.cover}" alt="${book.title}">
+            <div class="search-result-info">
+              <h4>${book.title}</h4>
+              <p>${book.author}</p>
+            </div>
+            <span class="search-result-price">${book.price.toFixed(2)} €</span>
+          </div>
+        `).join('');
+        dropdown.classList.add('show');
+      } else {
+        dropdown.classList.remove('show');
+      }
+    }
+
+    function selectBook(bookId) {
+      const book = allBooks.find(b => b.id === bookId);
+      if (book) {
+        document.getElementById('searchInput').value = book.title;
+        document.getElementById('searchDropdown').classList.remove('show');
+        // Redirect to livres page with the selected book
+        window.location.href = `livres.html?search=${encodeURIComponent(book.title)}`;
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const searchBox = document.querySelector('.search-box');
+      const dropdown = document.getElementById('searchDropdown');
+      
+      if (searchBox && dropdown && !searchBox.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

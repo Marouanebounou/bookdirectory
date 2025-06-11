@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livre - Bibliothèque Numérique</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .book-detail-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .book-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover {
+            flex: 0 0 300px;
+            height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info {
+            flex: 1;
+        }
+
+        .book-info h1 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .book-info .author {
+            font-size: 1.25rem;
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-info .description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #4a5568;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #2d3748;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .pdf-viewer {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .pdf-viewer h2 {
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-fullscreen {
+            background: #4a5568;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-fullscreen:hover {
+            background: #2d3748;
+            transform: translateY(-2px);
+        }
+
+        .pdf-viewer.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 1rem;
+            background: white;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .pdf-viewer.fullscreen .pdf-container {
+            height: calc(100vh - 100px);
+        }
+
+        .pdf-viewer.fullscreen .btn-fullscreen {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4a5568;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .book-header {
+                flex-direction: column;
+            }
+
+            .book-cover {
+                flex: 0 0 250px;
+                height: 375px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-book-reader"></i>
+            <span>Bibliothèque Numérique</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Accueil</a>
+            <a href="livres.html" class="active">Livres</a>
+            <a href="about.html">À Propos</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <div id="userSection" style="display: none;">
+                <span id="userName"></span>
+                <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
+            </div>
+            <div id="guestSection">
+                <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
+                <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="book-detail-container">
+        <a href="livres.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Retour aux livres
+        </a>
+
+        <div id="bookContent">
+            <!-- Book content will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Get book ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('id');
+
+        // Function to fetch and display book details
+        async function displayBookDetails() {
+            try {
+                const response = await fetch(`http://localhost:5000/api/books/${bookId}`);
+                const book = await response.json();
+
+                document.title = `${book.name} - Bibliothèque Numérique`;
+
+                const bookContent = document.getElementById('bookContent');
+                bookContent.innerHTML = `
+                    <div class="book-header">
+                        <div class="book-cover">
+                            <img src="http://localhost:5000/${book.imageUrl}" alt="${book.name}">
+                        </div>
+                        <div class="book-info">
+                            <h1>${book.name}</h1>
+                            <p class="author">${book.author}</p>
+                            <p class="description">${book.description}</p>
+                            <div class="book-actions">
+                                <a href="javascript:void(0)" onclick="openPdfInNewTab('${book.pdfUrl}')" class="btn btn-primary">
+                                    <i class="fas fa-book-open"></i> Lire en ligne
+                                </a>
+                                <a href="http://localhost:5000/${book.pdfUrl}" download class="btn btn-secondary">
+                                    <i class="fas fa-download"></i> Télécharger
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pdf-viewer">
+                        <h2>
+                            Aperçu du livre
+                            <button class="btn-fullscreen" onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i> Plein écran
+                            </button>
+                        </h2>
+                        <div class="pdf-preview">
+                            <p>Pour lire le livre en ligne, cliquez sur le bouton "Lire en ligne" ci-dessus.</p>
+                            <p>Le livre s'ouvrira dans un nouvel onglet pour une meilleure expérience de lecture.</p>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching book details:', error);
+                document.getElementById('bookContent').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Une erreur est survenue lors du chargement du livre.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to open PDF in new tab
+        function openPdfInNewTab(pdfUrl) {
+            const fullUrl = `http://localhost:5000/${pdfUrl}`;
+            window.open(fullUrl, '_blank');
+        }
+
+        // Function to handle PDF loading errors
+        function handlePdfError(iframe) {
+            const pdfViewer = iframe.parentElement;
+            pdfViewer.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Impossible de charger le PDF. Veuillez essayer de le télécharger.</p>
+                    <a href="http://localhost:5000/${book.pdfUrl}" download class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-download"></i> Télécharger le PDF
+                    </a>
+                </div>
+            `;
+        }
+
+        // Display book details on page load
+        displayBookDetails();
+
+        // Function to toggle fullscreen PDF viewer
+        function toggleFullscreen() {
+            const pdfViewer = document.querySelector('.pdf-viewer');
+            const btnFullscreen = document.querySelector('.btn-fullscreen');
+            const icon = btnFullscreen.querySelector('i');
+            
+            pdfViewer.classList.toggle('fullscreen');
+            
+            if (pdfViewer.classList.contains('fullscreen')) {
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+                btnFullscreen.innerHTML = '<i class="fas fa-compress"></i> Réduire';
+            } else {
+                icon.classList.remove('fa-compress');
+                icon.classList.add('fa-expand');
+                btnFullscreen.innerHTML = '<i class="fas fa-expand"></i> Plein écran';
+            }
+        }
+    </script>
+</body>
+</html> 
