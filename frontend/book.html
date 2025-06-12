@@ -185,29 +185,55 @@
                 height: 375px;
             }
         }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+        .desktop-only {
+            display: inline-flex;
+        }
+        .mobile-account-link {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-account-link {
+                display: block !important;
+                color: #4a5568;
+                text-decoration: none;
+                padding: 0.5rem 1rem;
+                font-weight: 500;
+            }
+            .mobile-account-link:hover {
+                color: #2d3748;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">
-            <i class="fas fa-book-reader"></i>
-            <span>Bibliothèque Numérique</span>
-        </div>
+        <a href="index.html" class="nav-brand">
+            <i class="fas fa-book-open"></i>
+            Bibliothèque Numérique
+        </a>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="nav-links">
             <a href="index.html">Accueil</a>
-            <a href="livres.html" class="active">Livres</a>
+            <a href="livres.html">Livres</a>
             <a href="about.html">À Propos</a>
             <a href="contact.html">Contact</a>
+            <a href="signin.html" class="mobile-account-link">Mon Compte</a>
         </div>
-        <div class="nav-actions">
-            <div id="userSection" style="display: none;">
-                <span id="userName"></span>
-                <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
-            </div>
-            <div id="guestSection">
-                <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
-                <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
-            </div>
+        <div class="nav-actions desktop-only">
+            <a href="signin.html" class="btn btn-outline">Connexion</a>
+            <a href="signup.html" class="btn btn-primary">Inscription</a>
         </div>
     </nav>
 
@@ -296,6 +322,30 @@
                 btnFullscreen.innerHTML = '<i class="fas fa-expand"></i> Plein écran';
             }
         }
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const navActions = document.querySelector('.nav-actions');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            navActions.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.navbar')) {
+                navLinks.classList.remove('active');
+                navActions.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        });
     </script>
 </body>
 </html> 

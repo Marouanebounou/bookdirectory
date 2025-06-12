@@ -180,49 +180,93 @@
       color: #4a5568;
       font-size: 1.1rem;
     }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+    .desktop-only {
+      display: inline-flex;
+    }
+    .mobile-account-link {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      .desktop-only {
+        display: none !important;
+      }
+      .mobile-account-link {
+        display: block !important;
+        color: #4a5568;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+      }
+      .mobile-account-link:hover {
+        color: #2d3748;
+      }
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-brand">
-      <i class="fas fa-book-reader"></i>
-      <span>Bibliothèque Numérique</span>
-    </div>
+    <a href="index.html" class="nav-brand">
+        <i class="fas fa-book-open"></i>
+        Bibliothèque Numérique
+    </a>
+    <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
     <div class="nav-links">
-      <a href="index.html">Accueil</a>
-      <a href="livres.html" class="active">Livres</a>
-      <a href="about.html">À Propos</a>
-      <a href="contact.html">Contact</a>
+        <a href="index.html">Accueil</a>
+        <a href="livres.html" class="active">Livres</a>
+        <a href="about.html">À Propos</a>
+        <a href="contact.html">Contact</a>
+        <a href="signin.html" class="mobile-account-link">Mon Compte</a>
     </div>
-    <div class="nav-actions">
-      <div id="userSection" style="display: none;">
-        <span id="userName"></span>
-        <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
-      </div>
-      <div id="guestSection">
-        <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
-        <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
-      </div>
+    <div class="nav-actions desktop-only">
+        <a href="signin.html" class="btn btn-outline">Connexion</a>
+        <a href="signup.html" class="btn btn-primary">Inscription</a>
     </div>
   </nav>
 
-  <div class="books-container">
-    <div class="search-section">
-      <div class="search-box">
-        <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un livre..." oninput="filterBooks()">
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Découvrez Notre Collection</h1>
+      <p>Explorez une vaste sélection de livres numériques pour tous les goûts. Trouvez votre prochaine lecture préférée dès aujourd'hui.</p>
+      <div class="search-container">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-bar" placeholder="Rechercher des livres, auteurs, catégories..." onkeyup="handleSearch()">
+          <div id="searchDropdown" class="search-dropdown"></div>
+        </div>
+        <button class="btn btn-primary">Rechercher</button>
       </div>
     </div>
+  </header>
 
-    <div class="books-grid" id="booksGrid">
-      <!-- Books will be dynamically added here -->
-    </div>
-  </div>
+  <main>
+    <section class="book-list-section">
+      <h2>Tous les livres</h2>
+      <div class="book-grid" id="allBooksGrid">
+        <!-- Books will be dynamically added here -->
+      </div>
+    </section>
+  </main>
 
   <footer>
     <div class="footer-content">
       <div class="footer-section">
-        <h3>À propos</h3>
-        <p>Votre bibliothèque numérique de confiance, offrant un accès facile à des milliers de livres.</p>
+        <h3>À Propos de Nous</h3>
+        <p>Votre source de confiance pour les livres numériques. Nous nous engageons à rendre le savoir accessible à tous.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
       </div>
       <div class="footer-section">
         <h3>Liens Rapides</h3>
@@ -234,21 +278,12 @@
         </ul>
       </div>
       <div class="footer-section">
-        <h3>Contact</h3>
-        <ul>
-          <li><i class="fas fa-envelope"></i> contact@bibliotheque.fr</li>
+        <h3>Contactez-nous</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-envelope"></i> contact@bibliothequenumerique.fr</li>
           <li><i class="fas fa-phone"></i> +33 1 23 45 67 89</li>
-          <li><i class="fas fa-map-marker-alt"></i> Paris, France</li>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Rue de la Bibliothèque, Paris</li>
         </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Suivez-nous</h3>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -256,118 +291,145 @@
     </div>
   </footer>
 
-  <script src="js/auth.js"></script>
   <script src="js/config.js"></script>
   <script>
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', function() {
-      updateAuthUI();
-      displayBooks();
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navActions = document.querySelector('.nav-actions');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        navActions.classList.toggle('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
     });
 
-    function updateAuthUI() {
-      const userSection = document.getElementById('userSection');
-      const guestSection = document.getElementById('guestSection');
-      const userName = document.getElementById('userName');
-      if (library.currentUser) {
-        userSection.style.display = 'flex';
-        guestSection.style.display = 'none';
-        userName.textContent = `Bonjour, ${library.currentUser.username}`;
-      } else {
-        userSection.style.display = 'none';
-        guestSection.style.display = 'flex';
-      }
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar')) {
+            navLinks.classList.remove('active');
+            navActions.classList.remove('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
+        }
+    });
+
+    // Function to handle book reading (redirects to book.html)
+    function readBook(bookId) {
+      window.location.href = `book.html?id=${bookId}`;
     }
 
-    function handleLogout() {
-      library.logout();
-      window.location.reload();
+    // Function to create a book card (same as in index.html)
+    function createBookCard(book) {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      card.innerHTML = `
+        <div class="book-cover">
+          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}">
+          <div class="book-overlay">
+            <button onclick="readBook('${book._id}')" class="btn-icon"><i class="fas fa-book-open"></i></button>
+            <a href="${API_URL}/${book.pdfUrl}" download class="btn-icon"><i class="fas fa-download"></i></a>
+          </div>
+        </div>
+        <div class="book-info">
+          <h3>${book.name}</h3>
+          <p class="author">${book.author}</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span>${book.rating || 'N/A'}</span>
+          </div>
+          <p class="description">${book.description}</p>
+          <div class="book-actions">
+            <button onclick="readBook('${book._id}')" class="btn btn-primary">Lire</button>
+            <a href="${API_URL}/${book.pdfUrl}" download class="btn btn-outline">Télécharger</a>
+          </div>
+        </div>
+      `;
+      return card;
     }
 
-    // Function to display books from backend
-    async function displayBooks() {
+    // Function to fetch and display all books
+    async function fetchAllBooks() {
       try {
         const response = await fetch(`${API_URL}/api/books`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch books');
+        }
         const books = await response.json();
-        const booksGrid = document.getElementById('booksGrid');
-        booksGrid.innerHTML = '';
-        if (books.length === 0) {
-          booksGrid.innerHTML = `
-            <div class="no-books">
-              <i class="fas fa-books"></i>
-              <p>Aucun livre disponible pour le moment.</p>
-            </div>
-          `;
-          return;
-        }
-        books.forEach(book => {
-          const bookCard = document.createElement('div');
-          bookCard.className = 'book-card';
-          bookCard.innerHTML = `
-            <div class="book-image">
-              <img src="${API_URL}/${book.imageUrl}" alt="${book.name}">
-            </div>
-            <div class="book-info">
-              <h3>${book.name}</h3>
-              <p class="author">${book.author}</p>
-              <p class="description">${book.description}</p>
-              <div class="book-actions">
-                <a href="book.html?id=${book._id}" class="btn btn-primary">Lire</a>
-                <a href="${API_URL}/${book.pdfUrl}" download class="btn btn-download">
-                  <i class="fas fa-download"></i> Télécharger
-                </a>
-              </div>
-            </div>
-          `;
-          booksGrid.appendChild(bookCard);
-        });
-      } catch (error) {
-        console.error('Error fetching books:', error);
-      }
-    }
+        const allBooksGrid = document.getElementById('allBooksGrid');
+        allBooksGrid.innerHTML = ''; // Clear existing content
 
-    // Search/filter books on the DOM
-    function filterBooks() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      const bookCards = document.querySelectorAll('.book-card');
-      let hasResults = false;
-      bookCards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const author = card.querySelector('.author').textContent.toLowerCase();
-        const description = card.querySelector('.description').textContent.toLowerCase();
-        if (title.includes(searchTerm) || author.includes(searchTerm) || description.includes(searchTerm)) {
-          card.style.display = 'flex';
-          hasResults = true;
+        // Filter based on search query from URL, if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        
+        const filteredBooks = searchQuery 
+          ? books.filter(book => 
+              book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              (book.description && book.description.toLowerCase().includes(searchQuery.toLowerCase()))
+            )
+          : books;
+
+        if (filteredBooks.length > 0) {
+          filteredBooks.forEach(book => {
+            const bookCard = createBookCard(book);
+            allBooksGrid.appendChild(bookCard);
+          });
         } else {
-          card.style.display = 'none';
+          allBooksGrid.innerHTML = '<p class="error-message">Aucun livre trouvé correspondant à votre recherche.</p>';
         }
-      });
-      // Show no results message if no books match the search
-      let noResults = document.getElementById('noResults');
-      if (!hasResults) {
-        if (!noResults) {
-          const noResultsDiv = document.createElement('div');
-          noResultsDiv.id = 'noResults';
-          noResultsDiv.className = 'no-books';
-          noResultsDiv.innerHTML = `
-            <i class="fas fa-search"></i>
-            <p>Aucun livre ne correspond à votre recherche.</p>
-          `;
-          document.getElementById('booksGrid').appendChild(noResultsDiv);
-        }
-      } else if (noResults) {
-        noResults.remove();
+
+      } catch (error) {
+        console.error('Error fetching all books:', error);
+        const allBooksGrid = document.getElementById('allBooksGrid');
+        allBooksGrid.innerHTML = '<p class="error-message">Erreur lors du chargement des livres.</p>';
       }
     }
 
-    // Add event listener for search with debounce
-    let searchTimeout;
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        filterBooks();
-      }, 300);
-    });
+    // Live search functionality
+    async function handleSearch() {
+      const query = document.getElementById('search-bar').value.toLowerCase();
+      try {
+        const response = await fetch(`${API_URL}/api/books`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch books');
+        }
+        const books = await response.json();
+
+        const filteredBooks = books.filter(book => 
+          book.name.toLowerCase().includes(query) ||
+          book.author.toLowerCase().includes(query) ||
+          (book.description && book.description.toLowerCase().includes(query))
+        );
+
+        const allBooksGrid = document.getElementById('allBooksGrid');
+        allBooksGrid.innerHTML = '';
+        if (filteredBooks.length > 0) {
+          filteredBooks.forEach(book => {
+            const bookCard = createBookCard(book);
+            allBooksGrid.appendChild(bookCard);
+          });
+        } else {
+          allBooksGrid.innerHTML = '<p class="error-message">Aucun livre trouvé correspondant à votre recherche.</p>';
+        }
+
+      } catch (error) {
+        console.error('Error during live search:', error);
+        const allBooksGrid = document.getElementById('allBooksGrid');
+        allBooksGrid.innerHTML = '<p class="error-message">Erreur lors de la recherche.</p>';
+      }
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', fetchAllBooks);
   </script>
 </body>
 </html> 

@@ -39,11 +39,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -172,11 +172,18 @@ body {
 
 /* Hero Section */
 .hero {
-  padding: 8rem 5% 5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 8rem 5% 5rem;
   background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
   position: relative;
   overflow: hidden;
@@ -571,6 +578,7 @@ footer::before {
   .hero {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 6rem 5% 3rem;
   }
 
   .hero-content {
@@ -582,26 +590,240 @@ footer::before {
   }
 
   .search-container {
-    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: auto;
+    position: static;
+    z-index: 1001;
+  }
+
   .navbar {
     padding: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-brand {
+    flex-shrink: 0;
+    min-width: 0;
   }
 
   .nav-links {
     display: none;
+    position: fixed;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  .nav-actions.active {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+  }
+
+  .nav-links a:hover {
+    background: var(--background-light);
   }
 
   .hero h1 {
     font-size: 2.5rem;
   }
 
+  .hero p {
+    font-size: 1rem;
+  }
+
   .hero-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .stat {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 120px;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .book-card {
+    margin: 0;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .footer-section ul {
+    display: flex;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .book-card {
+    max-width: 100%;
+  }
+
+  .book-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .book-actions .btn {
+    width: 100%;
+  }
+
+  .stat {
+    flex: 1 1 100%;
+  }
+}
+
+/* Add smooth scrolling for mobile */
+@media (hover: none) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a:active {
+    color: var(--primary-color);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+  .nav-links a,
+  .btn,
+  .book-actions a,
+  .social-links a {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .book-card {
+    padding: 1rem;
+  }
+
+  .book-info {
+    padding: 1rem 0;
+  }
+}
+
+/* Improve form elements on mobile */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
+  }
+
+  .search-box i {
+    left: 0.75rem;
+  }
+
+  #search-bar {
+    padding-left: 2.5rem;
+  }
+}
+
+/* Improve modal and popup on mobile */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .toast {
+    width: 90%;
+    left: 5%;
+    right: 5%;
   }
 }
 
@@ -775,4 +997,102 @@ footer::before {
     border-radius: var(--radius-md);
     border: 1px solid #feb2b2;
     margin: 1rem 0;
+}
+
+/* More Dropdown Menu */
+.more-dropdown {
+    position: relative;
+}
+
+.more-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.more-btn i {
+    transition: transform 0.3s;
+}
+
+.more-btn.active i {
+    transform: rotate(180deg);
+}
+
+.more-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+}
+
+.more-menu.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+.more-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-radius: var(--radius-sm);
+}
+
+.more-menu a:hover {
+    background: var(--background-light);
+    color: var(--primary-color);
+}
+
+.more-menu a i {
+    width: 20px;
+    text-align: center;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+    .more-menu {
+        position: static;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        margin-top: 0.5rem;
+    }
+
+    .more-menu a {
+        padding: 0.75rem 1rem;
+        justify-content: center;
+    }
+
+    .more-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

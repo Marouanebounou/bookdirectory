@@ -73,34 +73,60 @@
       font-weight: 600;
       color: #667eea;
     }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+    .desktop-only {
+      display: inline-flex;
+    }
+    .mobile-account-link {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      .desktop-only {
+        display: none !important;
+      }
+      .mobile-account-link {
+        display: block !important;
+        color: #4a5568;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+      }
+      .mobile-account-link:hover {
+        color: #2d3748;
+      }
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-brand">
-      <i class="fas fa-book-reader"></i>
-      <span>Bibliothèque Numérique</span>
-    </div>
+    <a href="index.html" class="nav-brand">
+        <i class="fas fa-book-open"></i>
+        Bibliothèque Numérique
+    </a>
+    <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
     <div class="nav-links">
-      <a href="index.html" class="active">Accueil</a>
-      <a href="livres.html">Livres</a>
-      <a href="about.html">À Propos</a>
-      <a href="contact.html">Contact</a>
+        <a href="index.html" class="active">Accueil</a>
+        <a href="livres.html">Livres</a>
+        <a href="about.html">À Propos</a>
+        <a href="contact.html">Contact</a>
+        <a href="signin.html" class="mobile-account-link">Mon Compte</a>
     </div>
-    <div class="nav-actions">
-      <div id="userSection" style="display: none;">
-        <span id="userName"></span>
-        <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
-      </div>
-      <div id="guestSection">
-        <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
-        <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
-      </div>
+    <div class="nav-actions desktop-only">
+        <a href="signin.html" class="btn btn-outline">Connexion</a>
+        <a href="signup.html" class="btn btn-primary">Inscription</a>
     </div>
   </nav>
 
-  <header class="hero">
-    <div class="hero-content">
+  <header class="hero" style="justify-content: center; align-items: center; text-align: center;">
+    <div class="hero-content" style="margin: 0 auto;">
       <h1>Découvrez Votre Prochain Livre Préféré</h1>
       <p>Explorez notre vaste collection de livres numériques. Des best-sellers aux trésors cachés, trouvez votre lecture idéale aujourd'hui.</p>
       <div class="hero-stats">
@@ -117,9 +143,6 @@
           <span>4.8/5 Étoiles</span>
         </div>
       </div>
-    </div>
-    <div class="hero-image">
-      <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Bibliothèque" />
     </div>
   </header>
 
@@ -406,6 +429,30 @@
       if (searchBox && dropdown && !searchBox.contains(event.target)) {
         dropdown.classList.remove('show');
       }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navActions = document.querySelector('.nav-actions');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        navActions.classList.toggle('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar')) {
+            navLinks.classList.remove('active');
+            navActions.classList.remove('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
+        }
     });
   </script>
 </body>

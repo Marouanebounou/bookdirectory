@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact - Bibliothèque Numérique</title>
-  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="contact.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -199,29 +199,55 @@
         font-size: 2rem;
       }
     }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+    .desktop-only {
+      display: inline-flex;
+    }
+    .mobile-account-link {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      .desktop-only {
+        display: none !important;
+      }
+      .mobile-account-link {
+        display: block !important;
+        color: #4a5568;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+      }
+      .mobile-account-link:hover {
+        color: #2d3748;
+      }
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-brand">
-      <i class="fas fa-book-reader"></i>
-      <span>Bibliothèque Numérique</span>
-    </div>
+    <a href="index.html" class="nav-brand">
+        <i class="fas fa-book-open"></i>
+        Bibliothèque Numérique
+    </a>
+    <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
     <div class="nav-links">
-      <a href="index.html">Accueil</a>
-      <a href="livres.html">Livres</a>
-      <a href="about.html">À Propos</a>
-      <a href="contact.html" class="active">Contact</a>
+        <a href="index.html">Accueil</a>
+        <a href="livres.html">Livres</a>
+        <a href="about.html">À Propos</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="signin.html" class="mobile-account-link">Mon Compte</a>
     </div>
-    <div class="nav-actions">
-      <div id="userSection" style="display: none;">
-        <span id="userName"></span>
-        <button class="btn btn-outline" onclick="handleLogout()">Déconnexion</button>
-      </div>
-      <div id="guestSection">
-        <a href="signin.html"><button class="btn btn-outline">Connexion</button></a>
-        <a href="signup.html"><button class="btn btn-primary">S'inscrire</button></a>
-      </div>
+    <div class="nav-actions desktop-only">
+        <a href="signin.html" class="btn btn-outline">Connexion</a>
+        <a href="signup.html" class="btn btn-primary">Inscription</a>
     </div>
   </nav>
 
@@ -250,56 +276,40 @@
         </div>
         <div class="info-card">
           <i class="fas fa-clock"></i>
-          <h3>Horaires</h3>
-          <p>Lundi - Vendredi: 9h - 18h<br>Samedi: 10h - 16h</p>
+          <h3>Heures d'ouverture</h3>
+          <p>Tous les jours : 8h-20h<br>Fermé les jours fériés</p>
         </div>
       </div>
-
       <div class="contact-form">
-        <form id="contactForm" onsubmit="handleSubmit(event)">
+        <h2>Envoyez-nous un message</h2>
+        <form action="#" method="POST">
           <div class="form-group">
-            <label for="name">Nom complet</label>
-            <input type="text" id="name" name="name" required placeholder="Entrez votre nom complet">
+            <label for="name">Nom Complet</label>
+            <input type="text" id="name" name="name" required>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="Entrez votre email">
+            <label for="email">Adresse Email</label>
+            <input type="email" id="email" name="email" required>
           </div>
           <div class="form-group">
             <label for="subject">Sujet</label>
-            <select id="subject" name="subject" required>
-              <option value="">Choisir un sujet</option>
-              <option value="general">Question générale</option>
-              <option value="support">Support technique</option>
-              <option value="billing">Facturation</option>
-              <option value="partnership">Partenariat</option>
-              <option value="other">Autre</option>
-            </select>
+            <input type="text" id="subject" name="subject" required>
           </div>
           <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required placeholder="Écrivez votre message ici..."></textarea>
+            <label for="message">Votre Message</label>
+            <textarea id="message" name="message" required></textarea>
           </div>
-          <button type="submit" class="submit-btn">
-            <i class="fas fa-paper-plane"></i> Envoyer le message
-          </button>
+          <button type="submit" class="submit-btn">Envoyer le Message</button>
         </form>
       </div>
     </div>
 
-    <div class="map-section">
-      <h2>Notre emplacement</h2>
+    <section class="map-section">
+      <h2>Où nous trouver</h2>
       <div class="map-container">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.292292615509614!3d48.85837007928757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647874587234!5m2!1sfr!2sfr" 
-          width="100%" 
-          height="450" 
-          style="border:0;" 
-          allowfullscreen="" 
-          loading="lazy">
-        </iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9936835697223!2d2.2922926156711717!3d48.85837007928747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964bfa1e9%3A0x6739a8e0d4c1a7c!2sEiffel%20Tower!5e0!3m2!1sen!2sfr!4v1678901234567!5m2!1sen!2sfr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
       </div>
-    </div>
+    </section>
   </main>
 
   <footer>
@@ -338,26 +348,29 @@
   </footer>
 
   <script>
-    function handleSubmit(event) {
-      event.preventDefault();
-      
-      // Get form data
-      const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        subject: document.getElementById('subject').value,
-        message: document.getElementById('message').value
-      };
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navActions = document.querySelector('.nav-actions');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      navActions.classList.toggle('active');
+      const icon = mobileMenuBtn.querySelector('i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    });
 
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      
-      // Show success message (you can replace this with your actual submission logic)
-      alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.');
-      
-      // Reset form
-      event.target.reset();
-    }
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.navbar')) {
+        navLinks.classList.remove('active');
+        navActions.classList.remove('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-times');
+      }
+    });
   </script>
 </body>
 </html> 
