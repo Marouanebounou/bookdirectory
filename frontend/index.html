@@ -274,7 +274,6 @@
           <img src="${API_URL}/${book.imageUrl}" alt="${book.name}">
           <div class="book-overlay">
             <button onclick="readBook('${book._id}')" class="btn-icon"><i class="fas fa-book-open"></i></button>
-            <a href="${API_URL}/${book.pdfUrl}" download class="btn-icon"><i class="fas fa-download"></i></a>
           </div>
         </div>
         <div class="book-info">
@@ -291,16 +290,20 @@
           <p class="description">${book.description}</p>
           <div class="book-actions">
             <button onclick="readBook('${book._id}')" class="btn btn-primary">Lire</button>
-            <a href="${API_URL}/${book.pdfUrl}" download class="btn btn-outline">Télécharger</a>
           </div>
         </div>
       `;
       return card;
     }
 
-    // Function to handle book reading
+    // Function to handle book reading (now includes download functionality)
     function readBook(bookId) {
-      window.location.href = `book.html?id=${bookId}`;
+      // First download the book
+      window.location.href = `${API_URL}/api/books/${bookId}/pdf`;
+      // Then open the book reader
+      setTimeout(() => {
+        window.location.href = `book.html?id=${bookId}`;
+      }, 1000);
     }
 
     // Load books when the page loads

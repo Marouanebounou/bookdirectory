@@ -314,16 +314,9 @@
             const fullname = document.getElementById('fullname').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
 
             // Basic validation
             let hasError = false;
-
-            if (password !== confirmPassword) {
-                document.getElementById('confirmPasswordError').textContent = 'Les mots de passe ne correspondent pas';
-                document.getElementById('confirmPasswordError').classList.add('show');
-                hasError = true;
-            }
 
             if (password.length < 6) {
                 document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 6 caractères';
@@ -332,6 +325,15 @@
             }
 
             if (hasError) return;
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+            
+            submitBtn.disabled = true;
+            buttonText.style.display = 'none';
+            spinner.style.display = 'block';
 
             try {
                 const response = await fetch(`${API_URL}/api/signup`, {
@@ -354,7 +356,7 @@
                     
                     // Redirect after 3 seconds
                     setTimeout(() => {
-                        redirectToSignin();
+                        window.location.href = 'signin.html';
                     }, 3000);
                 } else {
                     // Handle specific error messages
@@ -362,13 +364,22 @@
                         document.getElementById('emailError').textContent = 'Cet email est déjà utilisé';
                         document.getElementById('emailError').classList.add('show');
                     } else {
-                        alert(data.message || 'Erreur lors de l\'inscription');
+                        const errorMessage = document.getElementById('emailError');
+                        errorMessage.textContent = data.message || 'Erreur lors de l\'inscription';
+                        errorMessage.classList.add('show');
                     }
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de connexion au serveur');
+                const errorMessage = document.getElementById('emailError');
+                errorMessage.textContent = 'Erreur de connexion au serveur';
+                errorMessage.classList.add('show');
             }
+
+            // Reset button state
+            submitBtn.disabled = false;
+            buttonText.style.display = 'block';
+            spinner.style.display = 'none';
         });
     </script>
 </body>
