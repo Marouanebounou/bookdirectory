@@ -10,7 +10,7 @@ const User = require('./models/User');
 const app = express();
 const port = process.env.PORT || 5000;
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://farahdigital60:farahdigital60@digital.lanptml.mongodb.net/?retryWrites=true&w=majority&appName=Digital';
-const frontendUrl = process.env.FRONTEND_URL || 'https://booksfarah.netlify.app/';
+const frontendUrl = process.env.FRONTEND_URL || 'https://booksfarah.netlify.app';
 
 // Middleware
 app.use(cors({
