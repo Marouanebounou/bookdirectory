@@ -297,6 +297,7 @@
 
     <!-- Update the signup script -->
     <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
     <script>
         function showSuccessPopup() {
             document.getElementById('overlay').classList.add('show');
@@ -307,62 +308,68 @@
             window.location.href = '/signin.html';
         }
 
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Reset error messages
-            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
-            
-            // Get form values
-            const fullname = document.getElementById('fullname').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize library system
+            const library = new LibrarySystem();
 
-            // Basic validation
-            let hasError = false;
-
-            if (password.length < 6) {
-                document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 6 caractères';
-                document.getElementById('passwordError').classList.add('show');
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            // Show loading state
-            const submitBtn = document.getElementById('submitBtn');
-            const buttonText = document.getElementById('buttonText');
-            const spinner = document.getElementById('spinner');
-            
-            submitBtn.disabled = true;
-            buttonText.style.display = 'none';
-            spinner.style.display = 'block';
-
-            // Create new user
-            const newUser = {
-                fullname,
-                email,
-                password
-            };
-
-            // Add user to library system
-            const result = library.register(newUser);
-            
-            if (result.success) {
-                // Show success message
-                alert('Inscription réussie ! Vous allez être redirigé vers la page de connexion.');
-                // Redirect to signin page
-                window.location.href = 'signin.html';
-            } else {
-                const errorMessage = document.getElementById('emailError');
-                errorMessage.textContent = result.message || 'Erreur lors de l\'inscription';
-                errorMessage.classList.add('show');
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                // Reset button state
-                submitBtn.disabled = false;
-                buttonText.style.display = 'block';
-                spinner.style.display = 'none';
-            }
+                // Reset error messages
+                document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+                
+                // Get form values
+                const fullname = document.getElementById('fullname').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                // Basic validation
+                let hasError = false;
+
+                if (password.length < 6) {
+                    document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 6 caractères';
+                    document.getElementById('passwordError').classList.add('show');
+                    hasError = true;
+                }
+
+                if (hasError) return;
+
+                // Show loading state
+                const submitBtn = document.getElementById('submitBtn');
+                const buttonText = document.getElementById('buttonText');
+                const spinner = document.getElementById('spinner');
+                
+                submitBtn.disabled = true;
+                buttonText.style.display = 'none';
+                spinner.style.display = 'block';
+
+                // Create new user
+                const newUser = {
+                    fullname,
+                    email,
+                    password
+                };
+
+                // Add user to library system
+                const result = library.register(newUser);
+                
+                if (result.success) {
+                    // Show success message
+                    alert('Inscription réussie ! Vous allez être redirigé vers la page de connexion.');
+                    // Redirect to signin page
+                    window.location.href = 'signin.html';
+                } else {
+                    const errorMessage = document.getElementById('emailError');
+                    errorMessage.textContent = result.message || 'Erreur lors de l\'inscription';
+                    errorMessage.classList.add('show');
+                    
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    buttonText.style.display = 'block';
+                    spinner.style.display = 'none';
+                }
+            });
         });
     </script>
 </body>

@@ -244,8 +244,5 @@ class LibrarySystem {
     }
 }
 
-// Initialize the library system
-const library = new LibrarySystem();
-
-// Export for use in other files
-window.library = library; 
+// Make LibrarySystem available globally
+window.LibrarySystem = LibrarySystem; 
