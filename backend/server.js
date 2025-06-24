@@ -6,6 +6,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const User = require('./models/User');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,47 +21,29 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
 
-// Add specific route for PDF files
-app.get('/uploads/*.pdf', (req, res, next) => {
-    const filePath = path.join(__dirname, req.path);
-    
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-        return res.status(404).send('PDF not found');
-    }
-
-    // Set headers for PDF viewing
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="' + path.basename(filePath) + '"');
-    res.setHeader('Cache-Control', 'public, max-age=31536000');
-    
-    // Stream the file
-    const fileStream = fs.createReadStream(filePath);
-    fileStream.pipe(res);
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// MongoDB Connection
-mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadDir = 'uploads';
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir);
-        }
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    let folder = 'books';
+    let resource_type = 'image';
+    if (file.mimetype === 'application/pdf') {
+      resource_type = 'raw';
     }
+    return {
+      folder: folder,
+      resource_type: resource_type,
+      public_id: Date.now() + '-' + file.originalname.replace(/\.[^/.]+$/, ""),
+      format: file.mimetype === 'application/pdf' ? 'pdf' : undefined,
+    };
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -108,11 +93,9 @@ app.post('/api/books', upload.fields([
 ]), async (req, res) => {
     try {
         const { name, author, description, category } = req.body;
-        
-        // Store relative paths in the database
-        const imageUrl = req.files['bookImage'][0].path.replace(/\\/g, '/');
-        const pdfUrl = req.files['bookPdf'][0].path.replace(/\\/g, '/');
-
+        // Get Cloudinary URLs
+        const imageUrl = req.files['bookImage'][0].path;
+        const pdfUrl = req.files['bookPdf'][0].path;
         const book = new Book({
             name,
             author,
@@ -121,7 +104,6 @@ app.post('/api/books', upload.fields([
             imageUrl,
             pdfUrl
         });
-
         const savedBook = await book.save();
         res.status(201).json(savedBook);
     } catch (error) {
