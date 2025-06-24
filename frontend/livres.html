@@ -324,6 +324,25 @@
         }
     });
 
+    // List of default images
+    const DEFAULT_IMAGES = [
+      'imgs/photo-1512820790803-83ca734da794.jpeg',
+      'imgs/photo-1532012197267-da84d127e765.jpeg',
+      'imgs/photo-1541963463532-d68292c34b19.jpeg',
+      'imgs/photo-1543002588-bfa74002ed7e.jpeg',
+      'imgs/photo-1544947950-fa07a98d237f.jpeg',
+      'imgs/photo-1507842217343-583bb7270b66.avif'
+    ];
+    // Track used default images per page load
+    let usedDefaultImages = [];
+    function getRandomDefaultImage() {
+      if (usedDefaultImages.length === DEFAULT_IMAGES.length) usedDefaultImages = [];
+      const available = DEFAULT_IMAGES.filter(img => !usedDefaultImages.includes(img));
+      const chosen = available[Math.floor(Math.random() * available.length)];
+      usedDefaultImages.push(chosen);
+      return chosen;
+    }
+
     // Function to handle book reading (now includes download functionality)
     function readBook(bookId) {
       // First download the book
@@ -338,9 +357,11 @@
     function createBookCard(book) {
       const card = document.createElement('div');
       card.className = 'book-card';
+      // Use a unique id for the image to attach error handler
+      const imgId = 'book-img-' + Math.random().toString(36).substr(2, 9);
       card.innerHTML = `
         <div class="book-cover">
-          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}" loading="eager" decoding="async" width="300" height="450" onerror="this.onerror=null;this.src='imgs/photo-1507842217343-583bb7270b66.avif';">
+          <img id="${imgId}" src="${API_URL}/${book.imageUrl}" alt="${book.name}" loading="eager" decoding="async" width="300" height="450">
           <div class="book-overlay">
             <a href="${API_URL}/${book.pdfUrl}" class="btn-icon"><i class="fas fa-book-open"></i></a>
           </div>
@@ -362,6 +383,16 @@
           </div>
         </div>
       `;
+      // Add error handler for fallback
+      setTimeout(() => {
+        const img = document.getElementById(imgId);
+        if (img) {
+          img.onerror = function() {
+            this.onerror = null;
+            this.src = getRandomDefaultImage();
+          };
+        }
+      }, 0);
       return card;
     }
 
