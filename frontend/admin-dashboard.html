@@ -60,8 +60,7 @@
         }
 
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             padding: 0.75rem;
             border: 1px solid #e2e8f0;
             border-radius: 4px;
@@ -78,7 +77,6 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
         }
 
         .books-list h2 {
@@ -89,7 +87,6 @@
         .books-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
         }
 
         .books-table th,
@@ -138,87 +135,6 @@
             max-height: 150px;
             object-fit: cover;
             border-radius: 4px;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .admin-dashboard {
-                padding: 1.5rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .admin-dashboard {
-                padding: 1rem;
-            }
-
-            .admin-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .admin-actions {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .book-form,
-            .books-list {
-                padding: 1.5rem;
-            }
-
-            .books-table th,
-            .books-table td {
-                padding: 0.75rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .preview-image {
-                max-width: 80px;
-                max-height: 120px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .admin-dashboard {
-                padding: 0.75rem;
-            }
-
-            .book-form,
-            .books-list {
-                padding: 1rem;
-            }
-
-            .form-group input,
-            .form-group textarea,
-            .form-group select {
-                padding: 0.5rem;
-                font-size: 0.875rem;
-            }
-
-            .books-table th,
-            .books-table td {
-                padding: 0.5rem;
-                font-size: 0.875rem;
-            }
-
-            .preview-image {
-                max-width: 60px;
-                max-height: 90px;
-            }
         }
     </style>
 </head>
@@ -329,14 +245,7 @@
         // Add new book
         async function addBook(event) {
             event.preventDefault();
-            
-            const formData = new FormData();
-            formData.append('name', document.getElementById('bookName').value);
-            formData.append('author', document.getElementById('bookAuthor').value);
-            formData.append('category', document.getElementById('bookCategory').value);
-            formData.append('description', document.getElementById('bookDescription').value);
-            formData.append('bookImage', document.getElementById('bookImage').files[0]);
-            formData.append('bookPdf', document.getElementById('bookPdf').files[0]);
+            const formData = new FormData(event.target);
             
             try {
                 const response = await fetch(`${API_URL}/api/books`, {
@@ -344,17 +253,13 @@
                     body: formData
                 });
                 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to add book');
+                if (response.ok) {
+                    alert('Livre ajouté avec succès!');
+                    fetchBooks();
+                    event.target.reset();
                 }
-                
-                alert('Livre ajouté avec succès!');
-                fetchBooks();
-                event.target.reset();
             } catch (error) {
                 console.error('Error adding book:', error);
-                alert('Erreur lors de l\'ajout du livre: ' + error.message);
             }
         }
 

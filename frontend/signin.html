@@ -222,64 +222,59 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize library system
-            const library = new LibrarySystem();
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+            
+            submitBtn.disabled = true;
+            buttonText.style.display = 'none';
+            spinner.style.display = 'block';
 
-            document.getElementById('signinForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Show loading state
-                const submitBtn = document.getElementById('submitBtn');
-                const buttonText = document.getElementById('buttonText');
-                const spinner = document.getElementById('spinner');
-                
-                submitBtn.disabled = true;
-                buttonText.style.display = 'none';
-                spinner.style.display = 'block';
+            // Check for admin credentials
+            if (email === 'admin@bibliothequenumerique.fr' && password === 'admin123') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify({
+                    email: email,
+                    isAdmin: true
+                }));
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
 
-                // Check for admin credentials
-                if (email === 'admin@bibliothequenumerique.fr' && password === 'admin123') {
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    localStorage.setItem('currentUser', JSON.stringify({
-                        email: email,
-                        isAdmin: true
-                    }));
-                    window.location.href = 'admin-dashboard.html';
-                    return;
-                }
-
-                // Regular user login
-                const result = library.login(email, password);
-                
-                if (result.success) {
-                    // If remember me is checked, store email
-                    if (document.getElementById('remember').checked) {
-                        localStorage.setItem('rememberedEmail', email);
-                    } else {
-                        localStorage.removeItem('rememberedEmail');
-                    }
-                    window.location.href = 'livres.html';
+            // Regular user login
+            const result = library.login(email, password);
+            
+            if (result.success) {
+                // If remember me is checked, store email
+                if (document.getElementById('remember').checked) {
+                    localStorage.setItem('rememberedEmail', email);
                 } else {
-                    const errorMessage = document.getElementById('emailError');
-                    errorMessage.textContent = 'Email ou mot de passe incorrect';
-                    errorMessage.classList.add('show');
+                    localStorage.removeItem('rememberedEmail');
                 }
+                window.location.href = 'index.html';
+            } else {
+                const errorMessage = document.getElementById('emailError');
+                errorMessage.textContent = 'Email ou mot de passe incorrect';
+                errorMessage.classList.add('show');
+            }
 
-                // Reset button state
-                submitBtn.disabled = false;
-                buttonText.style.display = 'block';
-                spinner.style.display = 'none';
-            });
+            // Reset button state
+            submitBtn.disabled = false;
+            buttonText.style.display = 'block';
+            spinner.style.display = 'none';
+        });
 
-            // Check for remembered email
+        // Check for remembered email
+        window.addEventListener('load', () => {
             const rememberedEmail = localStorage.getItem('rememberedEmail');
             if (rememberedEmail) {
                 document.getElementById('email').value = rememberedEmail;

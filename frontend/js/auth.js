@@ -10,24 +10,77 @@ class LibrarySystem {
         };
     }
 
-    // Register new user
-    register(userData) {
-        // Check if user already exists
-        if (this.users.some(user => user.email === userData.email)) {
-            return {
-                success: false,
-                message: 'Cet email est déjà utilisé'
-            };
+    // Initialize books if none exist
+    initializeBooks() {
+        const initialBooks = [
+            {
+                id: 1,
+                title: "Le Petit Prince",
+                author: "Antoine de Saint-Exupéry",
+                category: "Littérature",
+                price: 12.99,
+                cover: "https://m.media-amazon.com/images/I/71OZY035QKL._AC_UF1000,1000_QL80_.jpg",
+                description: "Un conte poétique et philosophique sous l'apparence d'un livre pour enfants."
+            },
+            {
+                id: 2,
+                title: "Les Misérables",
+                author: "Victor Hugo",
+                category: "Littérature",
+                price: 15.99,
+                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
+                description: "L'histoire de Jean Valjean et de la France du XIXe siècle."
+            },
+            {
+                id: 3,
+                title: "Madame Bovary",
+                author: "Gustave Flaubert",
+                category: "Littérature",
+                price: 11.99,
+                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
+                description: "L'histoire d'Emma Bovary et de ses rêves romantiques."
+            },
+            {
+                id: 4,
+                title: "L'Étranger",
+                author: "Albert Camus",
+                category: "Philosophie",
+                price: 9.99,
+                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
+                description: "Un roman philosophique sur l'absurdité de la condition humaine."
+            },
+            {
+                id: 5,
+                title: "Les Fleurs du Mal",
+                author: "Charles Baudelaire",
+                category: "Poésie",
+                price: 10.99,
+                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
+                description: "Un recueil de poèmes majeur de la littérature française."
+            }
+        ];
+        localStorage.setItem('books', JSON.stringify(initialBooks));
+        return initialBooks;
+    }
+
+    // User registration
+    register(username, email, password) {
+        if (this.users.find(user => user.email === email)) {
+            throw new Error('Cet email est déjà utilisé');
         }
 
-        // Add new user
-        this.users.push(userData);
-        localStorage.setItem('users', JSON.stringify(this.users));
-
-        return {
-            success: true,
-            message: 'Inscription réussie'
+        const newUser = {
+            id: Date.now(),
+            username,
+            email,
+            password, // In a real app, this should be hashed
+            favorites: [],
+            cart: []
         };
+
+        this.users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(this.users));
+        return newUser;
     }
 
     // User login
@@ -189,60 +242,10 @@ class LibrarySystem {
 
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
     }
-
-    // Initialize books if none exist
-    initializeBooks() {
-        const initialBooks = [
-            {
-                id: 1,
-                title: "Le Petit Prince",
-                author: "Antoine de Saint-Exupéry",
-                category: "Littérature",
-                price: 12.99,
-                cover: "https://m.media-amazon.com/images/I/71OZY035QKL._AC_UF1000,1000_QL80_.jpg",
-                description: "Un conte poétique et philosophique sous l'apparence d'un livre pour enfants."
-            },
-            {
-                id: 2,
-                title: "Les Misérables",
-                author: "Victor Hugo",
-                category: "Littérature",
-                price: 15.99,
-                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
-                description: "L'histoire de Jean Valjean et de la France du XIXe siècle."
-            },
-            {
-                id: 3,
-                title: "Madame Bovary",
-                author: "Gustave Flaubert",
-                category: "Littérature",
-                price: 11.99,
-                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
-                description: "L'histoire d'Emma Bovary et de ses rêves romantiques."
-            },
-            {
-                id: 4,
-                title: "L'Étranger",
-                author: "Albert Camus",
-                category: "Philosophie",
-                price: 9.99,
-                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
-                description: "Un roman philosophique sur l'absurdité de la condition humaine."
-            },
-            {
-                id: 5,
-                title: "Les Fleurs du Mal",
-                author: "Charles Baudelaire",
-                category: "Poésie",
-                price: 10.99,
-                cover: "https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg",
-                description: "Un recueil de poèmes majeur de la littérature française."
-            }
-        ];
-        localStorage.setItem('books', JSON.stringify(initialBooks));
-        return initialBooks;
-    }
 }
 
-// Make LibrarySystem available globally
-window.LibrarySystem = LibrarySystem; 
+// Initialize the library system
+const library = new LibrarySystem();
+
+// Export for use in other files
+window.library = library; 

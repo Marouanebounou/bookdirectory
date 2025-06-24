@@ -280,10 +280,7 @@
                         <input type="checkbox" required> J'accepte les conditions d'utilisation
                     </label>
                 </div>
-                <button type="submit" class="btn-primary" id="submitBtn">
-                    <span id="buttonText">S'inscrire</span>
-                    <div class="spinner" id="spinner"></div>
-                </button>
+                <button type="submit" class="btn-primary">S'inscrire</button>
             </form>
             <div class="auth-footer">
                 <p>Vous avez déjà un compte ? <a href="/signin.html">Se connecter</a></p>
@@ -297,7 +294,6 @@
 
     <!-- Update the signup script -->
     <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         function showSuccessPopup() {
             document.getElementById('overlay').classList.add('show');
@@ -308,68 +304,71 @@
             window.location.href = '/signin.html';
         }
 
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize library system
-            const library = new LibrarySystem();
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            
+            // Get form values
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
 
-            document.getElementById('signupForm').addEventListener('submit', function(e) {
-                e.preventDefault();
+            // Basic validation
+            let hasError = false;
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Les mots de passe ne correspondent pas';
+                document.getElementById('confirmPasswordError').classList.add('show');
+                hasError = true;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 6 caractères';
+                document.getElementById('passwordError').classList.add('show');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullname,
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
                 
-                // Reset error messages
-                document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
-                
-                // Get form values
-                const fullname = document.getElementById('fullname').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-
-                // Basic validation
-                let hasError = false;
-
-                if (password.length < 6) {
-                    document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 6 caractères';
-                    document.getElementById('passwordError').classList.add('show');
-                    hasError = true;
-                }
-
-                if (hasError) return;
-
-                // Show loading state
-                const submitBtn = document.getElementById('submitBtn');
-                const buttonText = document.getElementById('buttonText');
-                const spinner = document.getElementById('spinner');
-                
-                submitBtn.disabled = true;
-                buttonText.style.display = 'none';
-                spinner.style.display = 'block';
-
-                // Create new user
-                const newUser = {
-                    fullname,
-                    email,
-                    password
-                };
-
-                // Add user to library system
-                const result = library.register(newUser);
-                
-                if (result.success) {
-                    // Show success message
-                    alert('Inscription réussie ! Vous allez être redirigé vers la page de connexion.');
-                    // Redirect to signin page
-                    window.location.href = 'signin.html';
-                } else {
-                    const errorMessage = document.getElementById('emailError');
-                    errorMessage.textContent = result.message || 'Erreur lors de l\'inscription';
-                    errorMessage.classList.add('show');
+                if (response.ok) {
+                    // Show success popup
+                    showSuccessPopup();
                     
-                    // Reset button state
-                    submitBtn.disabled = false;
-                    buttonText.style.display = 'block';
-                    spinner.style.display = 'none';
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        redirectToSignin();
+                    }, 3000);
+                } else {
+                    // Handle specific error messages
+                    if (data.message === 'User already exists') {
+                        document.getElementById('emailError').textContent = 'Cet email est déjà utilisé';
+                        document.getElementById('emailError').classList.add('show');
+                    } else {
+                        alert(data.message || 'Erreur lors de l\'inscription');
+                    }
                 }
-            });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de connexion au serveur');
+            }
         });
     </script>
 </body>
