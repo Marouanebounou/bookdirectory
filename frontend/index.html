@@ -275,7 +275,7 @@
         <div class="book-cover">
           <img src="${imageSrc}" alt="${book.name}">
           <div class="book-overlay">
-            <a href="${API_URL}/${book.pdfUrl}" class="btn-icon"><i class="fas fa-book-open"></i></a>
+            <a href="${API_URL}/api/books/${book._id}/pdf" class="btn-icon"><i class="fas fa-book-open"></i></a>
           </div>
         </div>
         <div class="book-info">
@@ -291,7 +291,7 @@
           </div>
           <p class="description">${book.description}</p>
           <div class="book-actions">
-            <a href="${API_URL}/${book.pdfUrl}" class="btn btn-primary">Lire</a>
+            <a href="${API_URL}/api/books/${book._id}/pdf" class="btn btn-primary">Lire</a>
           </div>
         </div>
       `;
