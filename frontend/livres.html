@@ -331,9 +331,11 @@
     function createBookCard(book) {
       const card = document.createElement('div');
       card.className = 'book-card';
+      // Determine image source: if imageUrl starts with http, use as is; else, prepend API_URL
+      let imageSrc = book.imageUrl && book.imageUrl.startsWith('http') ? book.imageUrl : `${API_URL}/${book.imageUrl}`;
       card.innerHTML = `
         <div class="book-cover">
-          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}">
+          <img src="${imageSrc}" alt="${book.name}">
           <div class="book-overlay">
             <a href="${API_URL}/${book.pdfUrl}" class="btn-icon"><i class="fas fa-book-open"></i></a>
           </div>
