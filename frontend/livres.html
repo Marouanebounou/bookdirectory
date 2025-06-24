@@ -340,7 +340,7 @@
       card.className = 'book-card';
       card.innerHTML = `
         <div class="book-cover">
-          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}" loading="eager" decoding="async" width="300" height="450">
+          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}" loading="eager" decoding="async" width="300" height="450" onerror="this.onerror=null;this.src='imgs/photo-1507842217343-583bb7270b66.avif';">
           <div class="book-overlay">
             <a href="${API_URL}/${book.pdfUrl}" class="btn-icon"><i class="fas fa-book-open"></i></a>
           </div>
