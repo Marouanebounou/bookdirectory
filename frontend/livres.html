@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Preload most popular book covers -->
+  <link rel="preload" as="image" href="/backend/uploads/1748387122370-notre-dame-de-paris.jpg" imagesrcset="/backend/uploads/1748387122370-notre-dame-de-paris.jpg">
+  <link rel="preload" as="image" href="/backend/uploads/1748388144289-le-petit-prince.jpg" imagesrcset="/backend/uploads/1748388144289-le-petit-prince.jpg">
+  <link rel="preload" as="image" href="/backend/uploads/1748388144446-les-mis-rables.jpg" imagesrcset="/backend/uploads/1748388144446-les-mis-rables.jpg">
+  <link rel="preload" as="image" href="/backend/uploads/1748388144702-madame-bovary.jpg" imagesrcset="/backend/uploads/1748388144702-madame-bovary.jpg">
+  <link rel="preload" as="image" href="/backend/uploads/1748388145182-les-fleurs-du-mal.jpg" imagesrcset="/backend/uploads/1748388145182-les-fleurs-du-mal.jpg">
+  <!-- End preload -->
   <style>
     .navbar {
         position: fixed;
@@ -333,7 +340,7 @@
       card.className = 'book-card';
       card.innerHTML = `
         <div class="book-cover">
-          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}">
+          <img src="${API_URL}/${book.imageUrl}" alt="${book.name}" loading="eager" decoding="async" width="300" height="450">
           <div class="book-overlay">
             <a href="${API_URL}/${book.pdfUrl}" class="btn-icon"><i class="fas fa-book-open"></i></a>
           </div>
